@@ -1,10 +1,10 @@
 library tip_flutter_debug_tool;
 
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:tip_flutter_debug_tool/dimen/screen_dimen_show.dart';
@@ -74,71 +74,109 @@ class DebugTools {
       return new Positioned(
           top: MediaQuery.of(context).size.height * 0.1,
           child: new Material(
-            color: Colors.grey.shade200.withOpacity(0.8),
+            color: Colors.grey.shade400.withOpacity(0.5),
             child: new Container(
               width: MediaQuery.of(context).size.width,
               alignment: Alignment.center,
               child: new Center(
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    IconButton(
-                      icon: Image.asset(
-                        'images/console.png',
-                        width: 24,
-                        package: 'tip_flutter_debug_tool',
-                      ),
-                      onPressed: () {
-                        logger.v("open debug pannel");
-                        _closePanel(overlayEntry);
-                        _openLogConsole();
-                      },
+                    Column(
+                      children: <Widget>[
+                        IconButton(
+                          icon: Image.asset(
+                            'images/console.png',
+                            width: 24,
+                            package: 'tip_flutter_debug_tool',
+                          ),
+                          onPressed: () {
+                            logger.v("open debug pannel");
+                            _openLogConsole();
+                          },
+                        ),
+                        Text("日志",style: TextStyle(fontSize: 12),)
+                      ],
                     ),
-                    IconButton(
-                      icon: Image.asset(
-                        'images/view.png',
-                        width: 24,
-                        package: 'tip_flutter_debug_tool',
-                      ),
-                      onPressed: () {
-                        logger.v("open debug pannel");
-                        _closePanel(overlayEntry);
-                        showWidgetInspect2(buildContext);
+                    Column(
+                      children: <Widget>[
+                        IconButton(
+                          icon: Image.asset(
+                            'images/view.png',
+                            width: 24,
+                            package: 'tip_flutter_debug_tool',
+                          ),
+                          onPressed: () {
+                            logger.v("open debug pannel");
+                            showWidgetInspect2(buildContext);
 //                        showWidgetInspect(buildContext);
-                      },
+                          },
+                        ),
+                        Text("控件检查",style: TextStyle(fontSize: 12),)
+                      ],
                     ),
-                    IconButton(
-                      icon: Image.asset(
-                        'images/screen.png',
-                        width: 24,
-                        package: 'tip_flutter_debug_tool',
-                      ),
-                      onPressed: () {
-                        logger.v("open dimen info");
-                        _closePanel(overlayEntry);
-                        _showDimenInfo();
-                      },
+                    Column(
+                      children: <Widget>[
+                        IconButton(
+                          icon: Image.asset(
+                            'images/screen.png',
+                            width: 24,
+                            package: 'tip_flutter_debug_tool',
+                          ),
+                          onPressed: () {
+                            logger.v("open dimen info");
+                            _showDimenInfo();
+                          },
+                        ),
+                        Text("屏幕参数",style: TextStyle(fontSize: 12),)
+                      ],
                     ),
-                    IconButton(
-                      icon: Image.asset(
-                        'images/memory.png',
-                        width: 24,
-                        package: 'tip_flutter_debug_tool',
-                      ),
-                      onPressed: () {
-                        logger.v("open dimen info");
-                        _closePanel(overlayEntry);
-                        _showImageMemInfo();
-                      },
+                    Column(
+                      children: <Widget>[
+                        IconButton(
+                          icon: Image.asset(
+                            'images/timeline.png',
+                            width: 24,
+                            package: 'tip_flutter_debug_tool',
+                          ),
+                          onPressed: () {
+                            logger.v("open timeline");
+                            _toggleTimeLine();
+                          },
+                        ),
+                        Text("性能视图",style: TextStyle(fontSize: 12),)
+                      ],
                     ),
-                    IconButton(
-                      icon: Image.asset(
-                        'images/close.png',
-                        width: 24,
-                        package: 'tip_flutter_debug_tool',
-                      ),
-                      onPressed: () {
-                        _closePanel(overlayEntry);
-                      },
+                    Column(
+                      children: <Widget>[
+                        IconButton(
+                          icon: Image.asset(
+                            'images/memory.png',
+                            width: 24,
+                            package: 'tip_flutter_debug_tool',
+                          ),
+                          onPressed: () {
+                            logger.v("open dimen info");
+                            _showImageMemInfo();
+                          },
+                        ),
+                        Text("图片内存",style: TextStyle(fontSize: 12),)
+                      ],
+                    ),
+                    Column(
+                      children: <Widget>[
+                        IconButton(
+                          icon: Image.asset(
+                            'images/close.png',
+                            width: 24,
+                            package: 'tip_flutter_debug_tool',
+                          ),
+                          onPressed: () {
+                            _closePanel(overlayEntry);
+                          },
+                        ),
+                        Text("关闭",style: TextStyle(fontSize: 12),)
+                      ],
                     ),
                   ],
                 ),
@@ -182,6 +220,15 @@ class DebugTools {
     Navigator.push(buildContext, route);
   }
 
+  void _toggleTimeLine() {
+    WidgetsApp.showPerformanceOverlayOverride =
+        !WidgetsApp.showPerformanceOverlayOverride;
+    if (WidgetsBinding.instance.renderViewElement != null) {
+      WidgetsBinding.instance.buildOwner
+          .reassemble(WidgetsBinding.instance.renderViewElement);
+    }
+  }
+
   void _showImageMemInfo() {
     PageRoute route;
     if (Platform.isIOS) {
@@ -211,8 +258,8 @@ class DebugTools {
         return FloatingActionButton(
           child: const Icon(Icons.search),
           onPressed: () {
-            String selectNode = WidgetInspectorService.instance
-                .getSelectedWidget(null, "temp");
+            String selectNode =
+                WidgetInspectorService.instance.getSelectedWidget(null, "temp");
             Map selectWidget = json.decode(selectNode);
             var properties = json.decode(WidgetInspectorService.instance
                 .getProperties(selectWidget['objectId'], "temp"));

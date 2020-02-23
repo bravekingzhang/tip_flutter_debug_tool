@@ -1,8 +1,12 @@
+import 'dart:ui';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/rendering.dart';
 import 'dart:convert';
 import 'dart:math' show min, max;
+import 'dart:ui';
 
 ///Used for display testing detector info
 class WidgetDetector extends StatefulWidget {
@@ -355,22 +359,26 @@ class _RenderWidgetDetectorOverlay extends RenderBox {
             fontWeight: FontWeight.bold,
             decorationStyle: TextDecorationStyle.dashed)));
 
-    for (_RenderObjectSelection selection in selections) {
-      if (textSpans.length > 0) textSpans.add(TextSpan(text: "\n"));
-      textSpans.add(TextSpan(
-          text: selection.widgetTypeString,
-          style: TextStyle(fontWeight: FontWeight.bold)));
-      String widgetKey = selection.widgetKeyString != null
-          ? " ,key: ${selection.widgetKeyString}"
-          : "";
-      if (widgetKey.length > 0) textSpans.add(TextSpan(text: widgetKey));
-      textSpans.add(TextSpan(text: "\n${selection.localFilePosition}"));
+    if (!kReleaseMode) {
+      for (_RenderObjectSelection selection in selections) {
+        if (textSpans.length > 0) textSpans.add(TextSpan(text: "\n"));
+        textSpans.add(TextSpan(
+            text: selection.widgetTypeString,
+            style: TextStyle(fontWeight: FontWeight.bold)));
+        String widgetKey = selection.widgetKeyString != null
+            ? " ,key: ${selection.widgetKeyString}"
+            : "";
+        if (widgetKey.length > 0) textSpans.add(TextSpan(text: widgetKey));
+        String imagePath = selection.imageInfo();
+        if (imagePath.length > 0) textSpans.add(TextSpan(text: imagePath));
+        textSpans.add(TextSpan(text: "\n${selection.localFilePosition}"));
+      }
     }
     textPainter.text = TextSpan(
         text: "",
         children: textSpans,
         style: TextStyle(color: _kTextColor, fontSize: 12));
-    textPainter.layout();
+    textPainter.layout(maxWidth: _windowSize.width);
 
     Rect textBgRect;
     Size textPainterSize = textPainter.size + Offset(4, 4);
@@ -426,6 +434,23 @@ class _RenderObjectSelection with WidgetInspectorService {
   }
 
   Type get widgetType => element.widget.runtimeType;
+
+  String imageInfo() {
+    if (element.widget is Image) {
+      Image image = element.widget;
+//      PaintingBinding.instance.imageCache.currentSizeBytes
+//      final T key = await obtainKey(configuration);
+//      return cache.evict(key);
+//      image.image.evict()
+      return '\n' +
+          image.image.toString() +
+          "\n  [ fit: " +
+          image.fit.toString() +
+          "]\n" +
+          "当前图片缓存${PaintingBinding.instance.imageCache.currentSizeBytes / 1000}kb\n";
+    }
+    return "";
+  }
 
   String get widgetTypeString => widgetType.toString();
 

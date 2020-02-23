@@ -1,7 +1,6 @@
 name: tip_flutter_debug_tool
 description: this is a debug tool for flutter,which contains view inspect,network data view and ...
 version: 0.0.1
-author: brzhang <1595819400@qq.com>
 homepage: https://github.com/bravekingzhang/tip_flutter_debug_tool
 
 environment:
@@ -31,6 +30,7 @@ flutter:
     - images/screen.png
     - images/memory.png
     - images/view.png
+    - images/timeline.png
   #
   # For details regarding assets in packages, see
   # https://flutter.dev/assets-and-images/#from-packages

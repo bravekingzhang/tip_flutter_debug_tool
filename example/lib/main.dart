@@ -2,18 +2,16 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:tip_flutter_debug_tool/tip_flutter_debug_tool.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
-void main(){
-  runZoned(() => runApp(MyApp()), onError: (Object obj, StackTrace stack) {
-
-  });
-  ErrorWidget.builder = (FlutterErrorDetails flutterErrorDetails){
+void main() {
+  runZoned(() => runApp(MyApp()), onError: (Object obj, StackTrace stack) {});
+  ErrorWidget.builder = (FlutterErrorDetails flutterErrorDetails) {
     print(flutterErrorDetails.toString());
     return Center(
       child: Text("Flutter 走神了"),
     );
   };
-
 }
 
 class MyApp extends StatelessWidget {
@@ -34,7 +32,6 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-
       home: MyHomePage(title: 'flutter摇一摇调试工具'),
     );
   }
@@ -59,19 +56,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -87,42 +71,76 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: InkWell(onTap: () {}, child: Text(widget.title)),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Image.network("http://t7.baidu.com/it/u=3616242789,1098670747&fm=79&app=86&f=JPEG?w=900&h=1350",width: 200,height: 200,),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
-            ),
-          ],
-        ),
+      body: ListView(
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text("左边文字"),
+             CachedNetworkImage(
+               imageUrl: "http://t7.baidu.com/it/u=3616242789,1098670747&fm=79&app=86&f=JPEG?w=900&h=1350",
+                width: 200,
+                height: 200,
+                fit: BoxFit.cover,
+              ),
+              Text("右边文字")
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text("左边文字"),
+              CachedNetworkImage(
+                imageUrl: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1582469061411&di=1af1a4120044355cfd2644d5d788fcaf&imgtype=0&src=http%3A%2F%2Ft9.baidu.com%2Fit%2Fu%3D1307125826%2C3433407105%26fm%3D79%26app%3D86%26f%3DJPEG%3Fw%3D5760%26h%3D3240",
+                width: 200,
+                height: 200,
+                fit: BoxFit.cover,
+              ),
+              Text("右边文字")
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text("左边文字"),
+              CachedNetworkImage(
+                imageUrl: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1582469061411&di=5034d74ae8baa7202e4af158317fdfcd&imgtype=0&src=http%3A%2F%2Ft9.baidu.com%2Fit%2Fu%3D583874135%2C70653437%26fm%3D79%26app%3D86%26f%3DJPEG%3Fw%3D3607%26h%3D2408",
+                width: 200,
+                height: 200,
+                fit: BoxFit.cover,
+              ),
+              Text("右边文字")
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text("左边文字"),
+              CachedNetworkImage(
+                imageUrl: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1582469061411&di=bbe47b1cfdc4c7281a73935c42acda59&imgtype=0&src=http%3A%2F%2Ft8.baidu.com%2Fit%2Fu%3D1484500186%2C1503043093%26fm%3D79%26app%3D86%26f%3DJPEG%3Fw%3D1280%26h%3D853",
+                width: 200,
+                height: 200,
+                fit: BoxFit.cover,
+              ),
+              Text("右边文字")
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text("左边文字"),
+              CachedNetworkImage(
+                imageUrl:  "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1582469061411&di=d54cfb8d3804a21efd56f6892d91a40e&imgtype=0&src=http%3A%2F%2Ft7.baidu.com%2Fit%2Fu%3D3204887199%2C3790688592%26fm%3D79%26app%3D86%26f%3DJPEG%3Fw%3D4610%26h%3D2968",
+                width: 200,
+                height: 200,
+                fit: BoxFit.cover,
+              ),
+              Text("右边文字")
+            ],
+          ),
+
+        ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
