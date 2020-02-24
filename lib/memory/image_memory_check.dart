@@ -35,6 +35,7 @@ class _ImageMemoryCheckState extends State<ImageMemoryCheck> {
       body: _imageDataList.length == 0
           ? Center(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Icon(
                     Icons.directions_run,
