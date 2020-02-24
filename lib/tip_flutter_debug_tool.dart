@@ -50,7 +50,7 @@ class DebugTools {
       return;
     }
     this.buildContext = buildContext;
-    _shakeDetector = ShakeDetector.autoStart(onPhoneShake: () {
+    _shakeDetector = ShakeDetector.intelligent(onPhoneShake: () {
       lock.synchronized(() async {
         showPanel();
       });

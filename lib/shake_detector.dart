@@ -48,12 +48,15 @@ class ShakeDetector {
         // reset the shake count after 1.5 seconds of no shakes
         if (lastShakeTimestamp + shakeCountResetTime < now) {
           shakeCount = 0;
+          debugPrint("摇一摇次数已经重置");
         }
+
 
         lastShakeTimestamp = now;
         if (++shakeCount >= minShakeCount) {
           shakeCount = 0;
           onPhoneShake();
+          debugPrint("摇一摇打开");
         }
       }
     });
@@ -67,9 +70,16 @@ class ShakeDetector {
   }
 
   static ShakeDetector autoStart({Function() onPhoneShake}) {
+    return ShakeDetector(onPhoneShake: onPhoneShake, minShakeCount: 5)
+      ..startListening();
+  }
+
+  static ShakeDetector intelligent({Function() onPhoneShake}) {
     return ShakeDetector(
-      onPhoneShake: onPhoneShake,
-      minShakeCount: 5
-    )..startListening();
+        onPhoneShake: onPhoneShake,
+        minShakeCount: 50,
+        shakeCountResetTime: 400,
+        minTimeBetweenShakes: 100)
+      ..startListening();
   }
 }
