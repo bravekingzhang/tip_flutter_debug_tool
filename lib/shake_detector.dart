@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sensors/sensors.dart';
 
@@ -74,10 +75,11 @@ class ShakeDetector {
       ..startListening();
   }
 
+  ///调试模式只需要5次，release模式50次
   static ShakeDetector intelligent({Function() onPhoneShake}) {
     return ShakeDetector(
         onPhoneShake: onPhoneShake,
-        minShakeCount: 50,
+        minShakeCount: kReleaseMode?50:5,
         shakeCountResetTime: 400,
         minTimeBetweenShakes: 100)
       ..startListening();
