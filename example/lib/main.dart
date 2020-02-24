@@ -129,11 +129,13 @@ class _MyHomePageState extends State<MyHomePage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text("左边文字"),
-              CachedNetworkImage(
-                imageUrl:  "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1582469061411&di=d54cfb8d3804a21efd56f6892d91a40e&imgtype=0&src=http%3A%2F%2Ft7.baidu.com%2Fit%2Fu%3D3204887199%2C3790688592%26fm%3D79%26app%3D86%26f%3DJPEG%3Fw%3D4610%26h%3D2968",
-                width: 200,
-                height: 200,
-                fit: BoxFit.cover,
+              RepaintBoundary(
+                child: CachedNetworkImage(
+                  imageUrl:  "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1582469061411&di=d54cfb8d3804a21efd56f6892d91a40e&imgtype=0&src=http%3A%2F%2Ft7.baidu.com%2Fit%2Fu%3D3204887199%2C3790688592%26fm%3D79%26app%3D86%26f%3DJPEG%3Fw%3D4610%26h%3D2968",
+                  width: 200,
+                  height: 200,
+                  fit: BoxFit.cover,
+                ),
               ),
               Text("右边文字")
             ],

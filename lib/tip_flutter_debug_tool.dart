@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:logger/logger.dart';
 import 'package:tip_flutter_debug_tool/dimen/screen_dimen_show.dart';
 import 'package:tip_flutter_debug_tool/inspector/widget_detector.dart';
@@ -141,7 +142,7 @@ class DebugTools {
                           ),
                           onPressed: () {
                             logger.v("open timeline");
-                            _toggleTimeLine();
+                            _performanceOpen();
                           },
                         ),
                         Text("性能视图",style: TextStyle(fontSize: 12),)
@@ -220,7 +221,13 @@ class DebugTools {
     Navigator.push(buildContext, route);
   }
 
-  void _toggleTimeLine() {
+  void _performanceOpen() {
+//    debugProfileBuildsEnabled = true; //打开build统计
+//    debugProfilePaintsEnabled = true;//打开paint统计
+//    debugPaintLayerBordersEnabled = true;//显示paint共享区域
+
+    PerformanceOverlay.allEnabled();
+
     WidgetsApp.showPerformanceOverlayOverride =
         !WidgetsApp.showPerformanceOverlayOverride;
     if (WidgetsBinding.instance.renderViewElement != null) {
